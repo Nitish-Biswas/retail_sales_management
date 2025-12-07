@@ -1,0 +1,30 @@
+.sort-dropdown {
+  display: flex;
+  gap: 1rem;
+}
+
+.sort-dropdown select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: white;
+  transition: border-color 0.2s;
+}
+
+.sort-dropdown select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+@media (max-width: 640px) {
+  .sort-dropdown {
+    flex-direction: column;
+  }
+
+  .sort-dropdown select {
+    width: 100%;
+  }
+}
