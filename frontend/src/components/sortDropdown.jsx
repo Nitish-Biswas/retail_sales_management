@@ -26,8 +26,8 @@ export function SortDropdown({ filters, onChange }) {
       </select>
 
       <select value={filters.sort_order || 'desc'} onChange={(e) => handleOrderChange(e.target.value)}>
-        <option value="desc">Newest First</option>
-        <option value="asc">Oldest First</option>
+        <option value="desc">Descending</option>
+        <option value="asc">Ascending</option>
       </select>
     </div>
   );
