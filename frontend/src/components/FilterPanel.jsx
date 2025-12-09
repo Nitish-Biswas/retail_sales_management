@@ -91,6 +91,22 @@ export function FilterPanel({ options, filters, onChange }) {
         ))}
       </div>
 
+      {/* Tags Filter */}
+      <div className="filter-group">
+        <label className="filter-label">Tags</label>
+        {options.tags.map((tags) => (
+          <div key={tags} className="checkbox-item">
+            <input
+              type="checkbox"
+              id={`tags-${tags}`}
+              checked={(filters.tags || []).includes(tags)}
+              onChange={(e) => handleMultiSelect('tags', tags, e.target.checked)}
+            />
+            <label htmlFor={`tags-${tags}`}>{tags}</label>
+          </div>
+        ))}
+      </div>
+
       {/* Payment Method Filter */}
       <div className="filter-group">
         <label className="filter-label">Payment Method</label>

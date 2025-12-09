@@ -1,3 +1,11 @@
-venv
+backend/.env
+node_modules/
+*.pyc
+__pycache__/
+venv/
 check.ipynb
+.env
+
+.DS_Store
+*.pyc
 

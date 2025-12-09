@@ -21,7 +21,11 @@ export function TransactionTable({ transactions, loading }) {
             <th>Phone Number</th>
             <th>Gender</th>
             <th>Age</th>
+            <th>Customer Type</th>
+            <th>Product Name</th>
+            <th>Brand</th>
             <th>Product Category</th>
+            <th>Tags</th>
             <th>Quantity</th>
             <th>Total Amount</th>
             <th>Customer Region</th>
@@ -39,7 +43,11 @@ export function TransactionTable({ transactions, loading }) {
               <td>{transaction.phone_number}</td>
               <td>{transaction.gender}</td>
               <td>{transaction.age}</td>
+              <td>{transaction.customer_type}</td>
+              <td>{transaction.product_name}</td>
+              <td>{transaction.brand}</td>
               <td>{transaction.product_category}</td>
+              <td>{transaction.tags}</td>
               <td>{transaction.quantity}</td>
               <td>₹{transaction.total_amount.toFixed(2)}</td>
               <td>{transaction.customer_region}</td>

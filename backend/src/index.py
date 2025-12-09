@@ -1,20 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-import os
-from src.routes.api import router, init_routes
-from src.services.data_service import DataService
+from src.routes import api
+from src.services.db import close_db
 
-load_dotenv()
-
-# Initialize FastAPI app
 app = FastAPI(
     title="TruEstate Sales Management API",
-    description="Backend API for Sales Management System",
+    description="Backend API for Sales Management System (Database Version)",
     version="1.0.0"
 )
 
-# Add CORS middleware
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,23 +18,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize data service with CSV path
-CSV_PATH = os.getenv("CSV_PATH", "")
-
-try:
-    print(f"Loading CSV from: {CSV_PATH}")
-    data_service = DataService(CSV_PATH)
-    init_routes(data_service)
-    print("✓ CSV loaded successfully")
-except Exception as e:
-    print(f"✗ Error loading CSV: {e}")
-
 # Include routes
-app.include_router(router, prefix="/api", tags=["transactions"])
+app.include_router(api.router, prefix="/api", tags=["transactions"])
 
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
+
+
 
 if __name__ == "__main__":
     import uvicorn

@@ -17,6 +17,20 @@ function App() {
     page: 1,
     page_size: 10,
   });
+  
+  // Fetch filter options on mount
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const options = await transactionService.getFilterOptions();
+        setFilterOptions(options);
+      } catch (err) {
+        console.error('Failed to load filter options', err);
+      }
+    };
+
+    fetchOptions();
+  }, []);
 
   // Fetch transactions whenever filters change
   useEffect(() => {
@@ -37,19 +51,7 @@ function App() {
     fetchData();
   }, [filters]);
 
-  // Fetch filter options on mount
-  useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const options = await transactionService.getFilterOptions();
-        setFilterOptions(options);
-      } catch (err) {
-        console.error('Failed to load filter options', err);
-      }
-    };
-
-    fetchOptions();
-  }, []);
+  
 
   const handleSearchChange = (search) => {
     setFilters({ ...filters, search, page: 1 });

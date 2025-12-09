@@ -1,18 +1,26 @@
-from fastapi import APIRouter, Query, HTTPException
+from fastapi import APIRouter, Query, HTTPException, FastAPI
 from typing import Optional, List
-from datetime import datetime
-from src.models.schemas import FilterParams, PaginatedResponse
-from src.services.data_service import DataService
+from contextlib import asynccontextmanager
+from src.services.data_service import data_service
 
-router = APIRouter()
-data_service = None
+@asynccontextmanager
+async def transaction_lifespan(app: FastAPI):
+    #STARTUP LOGIC 
+    try:
+        print("Server starting up: Refreshing transaction filters...")
+        data_service.refresh_filters()
+    except Exception as e:
+        print(f"WARNING: Failed to load initial filters: {e}")
+    
+    yield  
+    
+    # SHUTDOWN LOGIC 
+    print("Server shutting down: Releasing resources...")
+    data_service.shutdown()
 
-def init_routes(service: DataService):
-    """Initialize routes with data service"""
-    global data_service
-    data_service = service
+router = APIRouter(lifespan=transaction_lifespan)
 
-@router.get("/transactions", response_model=PaginatedResponse)
+@router.get("/transactions")
 async def get_transactions(
     search: Optional[str] = Query(None),
     customer_region: Optional[List[str]] = Query(None),
@@ -29,12 +37,8 @@ async def get_transactions(
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100)
 ):
-    """Get transactions with filters, search, sorting, and pagination"""
     try:
-        date_from_parsed = datetime.fromisoformat(date_from) if date_from else None
-        date_to_parsed = datetime.fromisoformat(date_to) if date_to else None
-        
-        filters = FilterParams(
+        return data_service.get_filtered_transactions(
             search=search,
             customer_region=customer_region,
             gender=gender,
@@ -43,24 +47,23 @@ async def get_transactions(
             product_category=product_category,
             tags=tags,
             payment_method=payment_method,
-            date_from=date_from_parsed,
-            date_to=date_to_parsed,
+            date_from=date_from,
+            date_to=date_to,
             sort_by=sort_by,
             sort_order=sort_order,
             page=page,
             page_size=page_size
         )
-        
-        result = data_service.get_paginated_data(filters)
-        return result
-    
     except Exception as e:
+        print(f"Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/filter-options")
 async def get_filter_options():
-    """Get available filter options"""
     try:
         return data_service.get_filter_options()
     except Exception as e:
+        print(f"Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+    
+    
