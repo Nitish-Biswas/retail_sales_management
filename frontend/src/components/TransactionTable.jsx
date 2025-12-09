@@ -28,6 +28,7 @@ export function TransactionTable({ transactions, loading }) {
             <th>Tags</th>
             <th>Quantity</th>
             <th>Total Amount</th>
+            <th>Payment Method</th>
             <th>Customer Region</th>
             <th>Product ID</th>
             <th> Employee Name</th>
@@ -50,6 +51,7 @@ export function TransactionTable({ transactions, loading }) {
               <td>{transaction.tags}</td>
               <td>{transaction.quantity}</td>
               <td>₹{transaction.total_amount.toFixed(2)}</td>
+              <td>{transaction.payment_method}</td>
               <td>{transaction.customer_region}</td>
               <td>{transaction.product_id}</td>
               <td>{transaction.employee_name}</td>
