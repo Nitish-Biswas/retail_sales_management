@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SearchBar } from './components/SearchBar';
 import { FilterPanel } from './components/FilterPanel';
-import { SortDropdown } from './components/SortDropdown';
+import { SortDropdown } from './components/sortDropdown';
 import { TransactionTable } from './components/TransactionTable';
 import { Pagination } from './components/Pagination';
 import { transactionService } from './services/api';
